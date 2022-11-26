@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import inquirer from 'inquirer';
 
 class Todo {
@@ -9,13 +10,13 @@ class Todo {
             {
                 type: 'input',
                 name: 'task',
-                message: '📝 write your task here:  ex: ',
-                default: 'checking mails' 
+                message: chalk.bgGreen('📝 write your task here:  ex: '),
+                default: chalk.yellow('checking mails') 
             },
             {
                 type: 'confirm',
                 name: 'ischecked',
-                message: 'Has your task completed: '
+                message: chalk.bgGreen('Has your task completed: ')
             }
         ]).then((ans) => {
             const date_ob = new Date();
@@ -29,10 +30,10 @@ class Todo {
             const date = `${day}-${month}-${year} ${hour}:${minute}:${second}`
             const task = {
                 task: ans.task,
-                completed: ans.ischecked ? '✔️  completed' : '⏳  incompleted',
+                completed: ans.ischecked ? chalk.yellow('✔️  completed') : chalk.yellow('⏳  incompleted'),
                 date
             };
-            console.log(`_____________\ntask:   ${task.task}\nmark as:   ${task.completed}\ncreatedAt:  ${date}`)
+            console.log(chalk.bgCyan(`task:   ${chalk.green(task.task)}\nmark as:   ${chalk.green(task.completed)}\ncreatedAt:  ${chalk.yellow(date)}`))
             this.tasks.push(task);
             console.log(`_____________`);
             this.displayList();
@@ -44,18 +45,18 @@ class Todo {
             {
                 type: 'list',
                 name: 'nextmove',
-                message: `${this.user}, choose what you want now?`,
+                message: chalk.yellow(`${chalk.cyan.bold(this.user)}, choose what you want now?`),
                 choices: [
                     {
-                        name: 'add more tasks',
+                        name: chalk.yellow('add more tasks'),
                         value: 'addTask'
                     },
                     {
-                        name: 'See all tasks',
+                        name: chalk.yellow('See all tasks'),
                         value: 'allTasks'
                     },
                     {
-                        name: 'Exit',
+                        name: chalk.yellow('Exit'),
                         value: 'exit'
                     },
                 ]
@@ -67,17 +68,18 @@ class Todo {
                 break;
                 case 'allTasks':
                     console.log('\n')
-                    console.log('_____ALL TASKS_____');
+                    console.log(chalk.magenta('_____ALL TASKS_____'));
                     this.tasks.map((task, i: number) => {
-                        console.log(`_______ ${i+1} ______\ntask:   ${task.task}\nmark as:   ${task.completed}\ncreatedAt:  ${task.date}`);
+                        console.log(chalk.cyan(`_______ ${chalk.green(i+1)} ______\ntask:   ${chalk.magenta(task.task)}\nmark as:   ${chalk.magenta(task.completed)}\ncreatedAt:  ${chalk.magenta(task.date)}`));
                         console.log('\n');
                     });
-                    console.log('_____END TASKS_____');
+                    console.log((chalk.magenta('_____END TASKS_____')));
                     console.log('\n')
                     this.displayList();
                 break;    
                 case 'exit':
-                    console.log('\nEnjoy your day. Thanks\n')
+                    console.log('\n')
+                    console.log(chalk.bgGreen('Enjoy your day. Thanks'))
                         
             }
         })
@@ -91,12 +93,12 @@ export class UserTasks extends Todo {
             {
                 type: 'input',
                 name: 'user',
-                message: 'Please Enter your name:',
-                default: 'John Doe'
+                message: chalk.bgCyan('Please Enter your name:'),
+                default: chalk.magenta('John Doe')
             }
         ]).then((ans) => {
             this.user = ans.user;
-            console.log(`_____________\nHi ${this.user}, \nWhat's in your mind.\nBring all your tasks.\nOrganize your work.\n_____________`);
+            console.log(chalk.green(`_____________\nHi ${chalk.bold.yellow(this.user)}, \nWhat's in your mind.\nBring all your tasks.\nOrganize your work.\n_____________`));
             this.write_todo()
         })
     }
